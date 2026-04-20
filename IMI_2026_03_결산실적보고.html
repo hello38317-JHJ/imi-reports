@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IMI 2026년 03월 결산 실적 보고</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+      background: #f5f5f3;
+      color: #1a1a1a;
+      padding: 40px 20px;
+    }
+    .report {
+      max-width: 940px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 52px 56px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    /* ===== 헤더 ===== */
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 44px;
+      padding-bottom: 28px;
+      border-bottom: 1.5px solid #e0e0dc;
+    }
+    .header-sub { font-size: 15px; color: #555; margin-bottom: 6px; font-weight: 500; }
+    .header-title { font-size: 34px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.8px; color: #111; }
+    .header-desc { font-size: 14px; color: #777; }
+    .header-right { text-align: right; font-size: 14px; color: #555; line-height: 2.0; font-weight: 500; }
+
+    /* ===== 섹션 ===== */
+    .section-wrap { margin-bottom: 40px; }
+    .section-title {
+      font-size: 15px;
+      color: #444;
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: 0.2px;
+    }
+    .divider { border: none; border-top: 1.5px solid #e4e4e0; margin-bottom: 14px; }
+    .unit-label { font-size: 12px; color: #aaa; text-align: right; margin-bottom: 8px; }
+
+    /* ===== 테이블 ===== */
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      font-size: 13px;
+      color: #666;
+      font-weight: 700;
+      padding: 11px 16px;
+      border-bottom: 1.5px solid #e4e4e0;
+      text-align: right;
+      background: #fafaf8;
+    }
+    th:first-child { text-align: left; }
+    td {
+      padding: 13px 16px;
+      border-bottom: 1px solid #f0f0ec;
+      text-align: right;
+      font-size: 15px;
+      color: #444;
+    }
+    td:first-child { text-align: left; color: #222; }
+    .bold-row td { font-weight: 700; font-size: 16px; color: #111; }
+    .muted-row td { color: #666; }
+
+    /* ===== 배지 ===== */
+    .rate-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 99px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .rate-up { background: #edf7ed; color: #1a6b1a; }
+    .rate-warn { background: #fff4e5; color: #a05000; }
+    .pos { color: #1a6b1a; font-weight: 700; }
+    .neg { color: #b03028; font-weight: 700; }
+
+    /* ===== 변동 요인 박스 ===== */
+    .factor-box {
+      background: #fafaf8;
+      border: 1px solid #e4e4e0;
+      border-radius: 10px;
+      padding: 22px 26px;
+      margin-top: 14px;
+    }
+    .factor-title { font-size: 15px; font-weight: 700; margin-bottom: 16px; color: #111; }
+    .factor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 40px; }
+    .factor-group { display: flex; flex-direction: column; }
+    .factor-section-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #999;
+      margin-bottom: 8px;
+      letter-spacing: 0.3px;
+    }
+    .factor-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 14px;
+      padding: 6px 0;
+      border-bottom: 1px solid #ececea;
+    }
+    .factor-item:last-child { border-bottom: none; }
+    .factor-name { color: #444; }
+
+    /* ===== KPI 카드 ===== */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+    .kpi-card {
+      background: #fafaf8;
+      border: 1px solid #e4e4e0;
+      border-radius: 10px;
+      padding: 20px 22px;
+    }
+    .kpi-label { font-size: 12px; color: #888; margin-bottom: 8px; letter-spacing: 0.3px; font-weight: 700; text-transform: uppercase; }
+    .kpi-value { font-size: 30px; font-weight: 700; color: #111; letter-spacing: -1px; }
+    .kpi-sub { font-size: 13px; margin-top: 6px; }
+
+    /* ===== 코멘트 카드 ===== */
+    .comment-card {
+      background: #ffffff;
+      border: 1.5px solid #e4e4e0;
+      border-radius: 12px;
+      padding: 30px 32px;
+    }
+    .comment-block { margin-bottom: 22px; }
+    .comment-block:last-child { margin-bottom: 0; }
+    .comment-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #888;
+      letter-spacing: 1px;
+      margin-bottom: 9px;
+      text-transform: uppercase;
+    }
+    .comment-text {
+      font-size: 15px;
+      color: #222;
+      line-height: 1.95;
+    }
+    .comment-text strong { font-weight: 700; }
+    .highlight-pos { color: #1a6b1a; font-weight: 700; }
+    .highlight-neg { color: #b03028; font-weight: 700; }
+    .comment-divider { border: none; border-top: 1px solid #ececea; margin: 22px 0; }
+
+    @media print {
+      body { background: white; padding: 0; }
+      .report { box-shadow: none; padding: 32px; }
+    }
+  </style>
+</head>
+<body>
+<div class="report">
+
+  <!-- 헤더 -->
+  <div class="header-row">
+    <div>
+      <div class="header-sub">아이엠아이 (IMI)</div>
+      <div class="header-title">2026년 03월 결산 실적 보고</div>
+      <div class="header-desc">전년 동월 대비 현황 · 단위: 억원</div>
+    </div>
+    <div class="header-right">
+      보고일: 2026. 04. 20<br>
+      작성: 회계팀 정혜진 팀장
+    </div>
+  </div>
+
+  <!-- 1. 거래금액 -->
+  <div class="section-wrap">
+    <div class="section-title">1. 거래금액</div>
+    <hr class="divider">
+    <div class="unit-label">(단위: 억원)</div>
+    <table>
+      <thead>
+        <tr>
+          <th>구분</th>
+          <th>26년 3월</th>
+          <th>25년 3월</th>
+          <th>증감액</th>
+          <th>증감율</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="bold-row">
+          <td>거래금액</td>
+          <td>1,311.57</td>
+          <td>471.64</td>
+          <td class="pos">+839.93</td>
+          <td><span class="rate-badge rate-up">▲ 178.1%</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="factor-box">
+      <div class="factor-title">3월 주요 변동 요인</div>
+      <div class="factor-grid">
+        <div class="factor-group">
+          <div class="factor-section-label">▲ 증가 주요 항목</div>
+          <div class="factor-item"><span class="factor-name">리니지클래식 (신규)</span><span class="pos">+706.1억</span></div>
+          <div class="factor-item"><span class="factor-name">아이온2 (신규)</span><span class="pos">+198.1억</span></div>
+          <div class="factor-item"><span class="factor-name">리니지M</span><span class="pos">+41.6억</span></div>
+          <div class="factor-item"><span class="factor-name">디아블로2:레저렉션</span><span class="pos">+21.9억</span></div>
+          <div class="factor-item"><span class="factor-name">패스오브엑자일</span><span class="pos">+10.2억</span></div>
+          <div class="factor-item"><span class="factor-name">메이플스토리월드</span><span class="pos">+4.7억</span></div>
+        </div>
+        <div class="factor-group">
+          <div class="factor-section-label">▽ 감소 주요 항목</div>
+          <div class="factor-item"><span class="factor-name">바람의나라클래식</span><span class="neg">△37.0억</span></div>
+          <div class="factor-item"><span class="factor-name">로스트아크</span><span class="neg">△36.1억</span></div>
+          <div class="factor-item"><span class="factor-name">던전앤파이터</span><span class="neg">△20.8억</span></div>
+          <div class="factor-item"><span class="factor-name">오딘:발할라라이징</span><span class="neg">△9.8억</span></div>
+          <div class="factor-item"><span class="factor-name">메이플스토리</span><span class="neg">△8.4억</span></div>
+          <div class="factor-item"><span class="factor-name">옛날바람</span><span class="neg">△4.0억</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. 손익 현황 -->
+  <div class="section-wrap">
+    <div class="section-title">2. 손익 현황</div>
+    <hr class="divider">
+    <div class="unit-label">(단위: 억원)</div>
+    <table>
+      <thead>
+        <tr>
+          <th>구분</th>
+          <th>26년 3월</th>
+          <th>25년 3월</th>
+          <th>증감액</th>
+          <th>증감율</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="muted-row">
+          <td>매출액</td>
+          <td>69.85</td>
+          <td>40.83</td>
+          <td class="pos">+29.02</td>
+          <td><span class="rate-badge rate-up">▲ 71.1%</span></td>
+        </tr>
+        <tr class="muted-row">
+          <td>비용</td>
+          <td>25.62</td>
+          <td>24.28</td>
+          <td class="neg">+1.34</td>
+          <td><span class="rate-badge rate-warn">▲ 5.5%</span></td>
+        </tr>
+        <tr class="bold-row">
+          <td>영업이익</td>
+          <td>42.26</td>
+          <td>15.45</td>
+          <td class="pos">+26.81</td>
+          <td><span class="rate-badge rate-up">▲ 173.5%</span></td>
+        </tr>
+        <tr>
+          <td style="color:#aaa; font-size:13px;">영업이익률</td>
+          <td style="color:#aaa; font-size:13px;">60.5%</td>
+          <td style="color:#aaa; font-size:13px;">37.8%</td>
+          <td style="color:#aaa; font-size:13px;">+22.7%p</td>
+          <td style="color:#aaa; font-size:13px;">—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 3. 실적 주요 분석 -->
+  <div class="section-wrap">
+    <div class="section-title">3. 3월 실적 주요 분석</div>
+    <hr class="divider">
+    <div class="comment-card">
+
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">거래금액</div>
+          <div class="kpi-value">1,311.6억</div>
+          <div class="kpi-sub"><span class="pos">▲ 178.1%</span> <span style="color:#bbb;">vs 전년</span></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">영업이익</div>
+          <div class="kpi-value">42.3억</div>
+          <div class="kpi-sub"><span class="pos">▲ 173.5%</span> <span style="color:#bbb;">vs 전년</span></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">영업이익률</div>
+          <div class="kpi-value">60.5%</div>
+          <div class="kpi-sub"><span class="pos">▲ 22.7%p</span> <span style="color:#bbb;">vs 전년 37.8%</span></div>
+        </div>
+      </div>
+
+      <div class="comment-block">
+        <div class="comment-label">거래금액</div>
+        <div class="comment-text">
+          리니지클래식·아이온2 신규 입점으로 <strong class="highlight-pos">+906.2억</strong>의 대규모 거래가 유입되며 전년 대비 <strong class="highlight-pos">178.1% 성장</strong>을 견인하였음. 로스트아크(△36.1억)·바람의나라클래식(△37.0억)·던전앤파이터(△20.8억) 등 기존 타이틀의 거래 감소가 있었으나, 신규 타이틀 유입 효과가 이를 압도함.
+        </div>
+      </div>
+
+      <hr class="comment-divider">
+
+      <div class="comment-block">
+        <div class="comment-label">매출</div>
+        <div class="comment-text">
+          거래금액 급증에 따라 중개수수료(<strong class="highlight-pos">+22.6억</strong>) 및 입금수수료(<strong class="highlight-pos">+5.3억</strong>)가 크게 증가하며 매출액이 전년 대비 <strong class="highlight-pos">71.1% 성장</strong>한 69.9억을 기록. 게임사업 이관에 따른 채널링 수입 소멸(△1.6억)은 일회성 구조적 감소로 영향 제한적임.
+        </div>
+      </div>
+
+      <hr class="comment-divider">
+
+      <div class="comment-block">
+        <div class="comment-label">비용 · 이익</div>
+        <div class="comment-text">
+          판관비는 전년 대비 <strong class="highlight-neg">5.5% 증가</strong>에 그쳐 매출 성장률(71.1%)을 크게 하회, 뚜렷한 영업 레버리지 효과가 실현됨. PG사 수수료(+1.6억) 등 매출 연동 비용이 증가하였으나 인건비(△0.7억)·감가상각비 절감이 이를 일부 상쇄. 영업이익률은 <strong class="highlight-pos">60.5%</strong>로 전년(37.8%) 대비 22.7%p 개선되며 역대 최고 수준을 기록함.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
